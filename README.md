@@ -1,6 +1,6 @@
 # To-Do List Application
 
-A simple To-Do List Terminal Application using Python
+A simple To-Do List Terminal Application using Python 3
 
 ## Prerequisites
 
