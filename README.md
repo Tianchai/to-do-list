@@ -18,4 +18,4 @@ python main.py
 
 ### Note
 
-This app uses redis server on [Redis Labs](https://redislabs.com/) by default, but you use your own redis server by set config in config.ini
+This app uses redis server on [Redis Labs](https://redislabs.com/) by default, but you can use your own redis server by set config in config.ini
