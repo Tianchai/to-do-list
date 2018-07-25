@@ -80,7 +80,9 @@ def manage(redis, style):
       })
     else:
       print('- No %s has been added.' % type_list[i])
-      if (i == len(type_list) - 1): continue
+
+  if redis.llen(type_list[0]) < 1 and redis.llen(type_list[1]) < 1:
+    return
 
   answers = prompt(questions, style=style)
 
@@ -99,7 +101,8 @@ def manage(redis, style):
     print('Manage finished to-do thing(s) successful!!')
   elif answers['action'] == 'remove':
     for i in range(len(type_list)):
-      for j in range(redis.llen(type_list[i])):
+      j = 0
+      while j < redis.llen(type_list[i]):
         # handle error index out of range after removing at least one
         if (redis.lindex(type_list[i], j) == None): continue
         # get full string
@@ -108,4 +111,6 @@ def manage(redis, style):
         data_name, data_mark = data_str.split('|')
         if data_name in answers['remove_%s' % type_list[i]]:
           redis.lrem(type_list[i], data_str)
+        else:
+          j += 1
     print('Remove to-do thing(s) successful!!')
