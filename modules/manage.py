@@ -10,6 +10,17 @@ def rreplace(s, old, new):
 
 def manage(redis, style):
   
+  # define color for print out
+  class bcolors:
+    PURPLE = '\033[95m'
+    CYAN = '\033[94m'
+    GREEN = '\033[92m'
+    YELLOW = '\033[93m'
+    RED = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+
   # Define a style for PyInquirer
   style = style_from_dict({
     Token.Separator: '#cc5454',
@@ -79,7 +90,12 @@ def manage(redis, style):
         'when': lambda answers: answers['action'] == 'remove'
       })
     else:
-      print('- No %s has been added.' % type_list[i])
+      print(
+        bcolors.RED,
+        '- No %s is in the list.' % type_list[i],
+        bcolors.ENDC,
+        sep=''
+      )
 
   if redis.llen(type_list[0]) < 1 and redis.llen(type_list[1]) < 1:
     return
@@ -103,8 +119,6 @@ def manage(redis, style):
     for i in range(len(type_list)):
       j = 0
       while j < redis.llen(type_list[i]):
-        # handle error index out of range after removing at least one
-        if (redis.lindex(type_list[i], j) == None): continue
         # get full string
         data_str = redis.lindex(type_list[i], j).decode('utf-8')
         # split name and mark from full string
